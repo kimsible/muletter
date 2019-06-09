@@ -1,0 +1,22 @@
+{
+  "name": "muletter",
+  "description": "minimalist email list driven by a database-less Web API",
+  "keywords": [
+    "Node.js",
+    "newsletter",
+    "API",
+    "mailing",
+    "list",
+    "server",
+    "json",
+    "http"
+  ],
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kimsible/muletter"
+  },
+  "engines": {
+    "node": ">=12.4.0"
+  }
+}
