@@ -1,9 +1,13 @@
 'use strict'
 
 const test = require('ava')
+const delay = require('delay')
+
+process.env.KEY = '123'
+process.env.STORAGE = '/tmp'
+
 const { validate, authorize } = require('./util')
 const server = require('./server')
-process.env.KEY = '123'
 
 test('validate - valid email', macroValidate, { url: '/email@provider.io' }, 'email@provider.io')
 test('validate - missing @', macroValidate, { url: '/emailprovider' }, Error)
@@ -113,7 +117,8 @@ test('server - GET 200 Ok', async t => {
   t.is(res.statusCode, 200)
 })
 
-function request (options) {
+async function request (options) {
+  await delay(15)
   return new Promise((resolve, reject) => {
     const req = require('http').request({
       port: server.address().port,
@@ -123,3 +128,7 @@ function request (options) {
     req.end()
   })
 }
+
+test.after.always(async t => {
+  await require('mudb').drop('/tmp/subscribers.json').catch(() => {})
+})
