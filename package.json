@@ -31,6 +31,7 @@
   "main": "server",
   "scripts": {
     "start": "node server",
+    "key": "node key",
     "export": "node --require dotenv/config export",
     "postinstall": "cp pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
   }
