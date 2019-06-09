@@ -10,6 +10,16 @@ const validate = req => {
   throw new Error('Conflict Error')
 }
 
+const authorize = req => {
+  const { authorization } = req.headers
+  const [, key] = (authorization || '').match(/^Basic (.+)$/)
+  if (key === process.env.KEY) {
+    return key
+  }
+  throw new Error('Unauthorized Error')
+}
+
 module.exports = {
-  validate
+  validate,
+  authorize
 }
