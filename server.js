@@ -1,6 +1,7 @@
 'use strict'
 
 const { createServer } = require('http')
+const { validate, authorize } = require('./util')
 
 const { PORT, HOST, NODE_ENV } = process.env
 
@@ -8,10 +9,28 @@ let server
 
 run()
 
-module.exports = { server }
+module.exports = server
 
 async function run () {
   server = createServer((req, res) => {
+    const actions = {
+      POST: req => {
+        const email = validate(req)
+        return email
+      },
+
+      DELETE: req => {
+        authorize(req)
+        const email = validate(req)
+        return email
+      },
+
+      GET: req => {
+        authorize(req)
+        return ''
+      }
+    }
+
     // Credentials access keys
     res.setHeader('Access-Control-Allow-Headers', 'Authorization')
     res.setHeader('Access-Control-Allow-Credentials', true)
@@ -19,12 +38,23 @@ async function run () {
     // REST Methods
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE')
 
+    const { method } = req
     try {
-      res.end(req.method)
+      if (!actions[method]) {
+        res.writeHead(405).end('Method Not Allowed')
+        return
+      }
+      res.end(actions[method](req))
     } catch (err) {
-      // Unexpected Error
-      res.writeHead(500).end('Internal Server Error')
-      process.stderr.write(err + '\n')
+      if (/^Conflict/.test(err.message)) {
+        res.writeHead(409).end(err.message)
+      } else if (/^Unauthorized/.test(err.message)) {
+        res.writeHead(401).end(err.message)
+      } else {
+        // Unexpected Error
+        res.writeHead(500).end('Internal Server Error')
+        process.stderr.write(err + '\n')
+      }
     }
   })
 
