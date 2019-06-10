@@ -1,6 +1,8 @@
 'use strict'
 
 const { createServer } = require('http')
+const crypto = require('crypto')
+const qs = require('querystring')
 const path = require('path')
 const mudb = require('mudb')
 const { validate, authorize } = require('./util')
@@ -21,18 +23,19 @@ function actions (req) {
   if (method === 'POST') {
     const email = validate(req)
     // Add if non-existent email
-    if (!db.get(email).length) {
-      db.put(email).save()
+    if (!db.get({ email }).length) {
+      db.put({ email, _id: crypto.randomBytes(3 * 4).toString('base64') }).save()
     }
     return email
   } else if (method === 'DELETE') {
-    authorize(req)
-    const email = validate(req)
-    db.del(email).save()
-    return email
+    db.del({ _id: req.url.substr(1) }).save()
+    return
   } else if (method === 'GET') {
     authorize(req)
-    return db.data.join('\n')
+    if (qs.parse(req.url.substr(2)).verbose !== undefined) {
+      return JSON.stringify(db.data)
+    }
+    return db.data.map(row => row.email).join('\n')
   }
   throw new Error('Method Not Allowed')
 }

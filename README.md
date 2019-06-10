@@ -57,19 +57,15 @@ POST /user@provider.com
 > user@provider.com
 ```
 
-
 **Remove email**
 
-|Request|Headers|
-|-------|-------|
-|`DELETE /:email`|`Authorization: Basic :key`|
+|Request|
+|-------|
+|`DELETE /:id`|
 
 Example :
 ```http
-DELETE /user@provider.com
-Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
-
-> user@provider.com
+DELETE /ky8857XlEj1NXFHh
 ```
 
 **Export emails**
@@ -86,6 +82,23 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 > user1@provider.com
   user2@provider.com
   user3@provider.com
+  ...
+```
+
+**Export emails with IDs**
+
+|Request|Headers|
+|:------|:------|
+|`GET /?verbose`|`Authorization: Basic :key`|
+
+```http
+GET /?verbose
+Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
+
+> {
+    { email: user1@provider.com, _id: 857XlEj1N8FHhXky },
+    { email: user1@provider.com, _id: 7XlEky885j1NXFHh },
+    { email: user3@provider.com, _id: NHhky8XF857XlEj1 },
   ...
 ```
 

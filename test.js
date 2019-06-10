@@ -67,28 +67,6 @@ test('server - POST 200 OK', async t => {
   t.is(res.statusCode, 200)
 })
 
-test('server - DELETE 401 Error', async t => {
-  const res = await request({
-    method: 'DELETE',
-    path: '/email@provider.com',
-    headers: {
-      authorization: 'Basic abc'
-    }
-  })
-  t.is(res.statusCode, 401)
-})
-
-test('server - DELETE 409 Error', async t => {
-  const res = await request({
-    method: 'DELETE',
-    path: '/email@provider',
-    headers: {
-      authorization: 'Basic 123'
-    }
-  })
-  t.is(res.statusCode, 409)
-})
-
 test('server - DELETE 200 OK', async t => {
   const res = await request({
     method: 'DELETE',
