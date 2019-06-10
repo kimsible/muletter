@@ -4,7 +4,7 @@ const { randomBytes } = require('crypto')
 const { parse } = require('url')
 
 if (process.argv.find(i => i === 'key')) {
-  process.stdout.write(`KEY : ${randomBytes(20).toString('base64')}\n`)
+  process.stdout.write(`KEY : ${randomBytes(3 * 8).toString('base64')}\n`)
 }
 
 if (process.argv.find(i => i === 'export')) {

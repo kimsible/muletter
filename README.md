@@ -15,7 +15,7 @@ Generate an **API access key** locally :
 ```bash
 npm run key
 
-> KEY : EsvLcQTcwflXbKk/1MSf3umI1gE=
+> KEY : rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 ```
 
 Set **environment variables** on remote server :
@@ -67,7 +67,7 @@ POST /user@provider.com
 Example :
 ```http
 DELETE /user@provider.com
-Authorization: Basic EsvLcQTcwflXbKk/1MSf3umI1gE=
+Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 
 > user@provider.com
 ```
@@ -81,7 +81,7 @@ Authorization: Basic EsvLcQTcwflXbKk/1MSf3umI1gE=
 Example :
 ```http
 GET /
-Authorization: Basic EsvLcQTcwflXbKk/1MSf3umI1gE=
+Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 
 > user1@provider.com
   user2@provider.com
