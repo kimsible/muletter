@@ -42,13 +42,6 @@ npm run export
   ...
 ```
 
-Delete an email :
-```bash
-npm run delete user@provider.com
-
-> user@provider.com
-```
-
 ## API Reference
 
 **Add email**

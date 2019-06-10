@@ -31,8 +31,9 @@
   "main": "server",
   "scripts": {
     "start": "node server",
-    "key": "node key",
-    "export": "node --require dotenv/config export",
+    "test": "ava -v",
+    "key": "node scripts.js key",
+    "export": "node --require dotenv/config scripts.js export",
     "postinstall": "cp pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
   }
 }
