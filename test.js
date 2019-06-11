@@ -3,49 +3,11 @@
 const test = require('ava')
 const delay = require('delay')
 
+const { request: cbRequest } = require('http')
+
 process.env.KEY = '123'
 process.env.STORAGE = '/tmp'
-
-const { validate, authorize } = require('./util')
 const server = require('./server')
-
-test('util/validate - valid email', macroValidate, { url: '/email@provider.io' }, 'email@provider.io')
-test('util/validate - missing @', macroValidate, { url: '/emailprovider' }, Error)
-test('util/validate - wrong extension', macroValidate, { url: '/email@provider.c' }, Error)
-
-function macroValidate (t, input, expected) {
-  if (typeof expected !== 'string') {
-    t.throws(() => { validate(input) }, expected)
-  } else {
-    t.is(validate(input), expected)
-  }
-}
-
-test('util/authorize - right key', macroAuthorize, {
-  headers: {
-    authorization: 'Basic 123'
-  }
-}, process.env.KEY)
-
-test('util/authorize - bad header', macroAuthorize, {
-  headers: {
-    authorization: 'OAuth 123'
-  }
-}, Error)
-
-test('util/authorize - wrong key', macroAuthorize, {
-  headers: {
-    authorization: 'Basic 42'
-  }
-}, Error)
-
-function macroAuthorize (t, input, expected) {
-  if (typeof expected !== 'string') {
-    t.throws(() => { authorize(input) }, expected)
-  } else {
-    t.is(authorize(input), expected)
-  }
-}
 
 test('server - 500 Error', async t => {
   const res = await request({ method: 'POST', path: '/email@provider.com' }, 0)
@@ -103,7 +65,7 @@ test('server - GET 200 Ok', async t => {
 async function request (options, wait = 15) {
   await delay(wait)
   return new Promise((resolve, reject) => {
-    const req = require('http').request({
+    const req = cbRequest({
       port: server.address().port,
       ...options
     }, resolve)
