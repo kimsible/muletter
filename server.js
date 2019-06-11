@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const qs = require('querystring')
 const path = require('path')
 const mudb = require('mudb')
-const { validate, authorize } = require('./util')
+const { body, validate, authorize } = require('./util')
 
 const { PORT, HOST, STORAGE, NODE_ENV } = process.env
 const subscribersJSON = path.resolve(STORAGE || process.cwd(), './subscribers.json')
@@ -18,10 +18,11 @@ async function run () {
   db = await mudb.open(subscribersJSON)
 }
 
-function actions (req) {
+async function actions (req) {
   const { method } = req
   if (method === 'POST') {
-    const email = validate(req)
+    const email = await body(req)
+    validate(email)
     // Add if non-existent email
     if (!db.get({ email }).length) {
       db.put({ email, _id: crypto.randomBytes(3 * 4).toString('base64') }).save()
@@ -40,7 +41,7 @@ function actions (req) {
   throw new Error('Method Not Allowed')
 }
 
-const server = createServer((req, res) => {
+const server = createServer(async (req, res) => {
   // Credentials access keys
   res.setHeader('Access-Control-Allow-Headers', 'Authorization')
   res.setHeader('Access-Control-Allow-Credentials', true)
@@ -49,7 +50,7 @@ const server = createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE')
 
   try {
-    res.end(actions(req))
+    res.end(await actions(req))
   } catch (err) {
     if (/^Conflict/.test(err.message)) {
       res.writeHead(409).end()

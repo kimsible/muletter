@@ -46,13 +46,14 @@ npm run export
 
 **Add email**
 
-|Request|
-|:------|
-|`POST /:email`
+|Request|Body|
+|:------|:---|
+|`POST /`|`email <string>`|
 
 Example :
 ```http
-POST /user@provider.com
+POST /
+user@provider.com
 
 > user@provider.com
 ```

@@ -26,9 +26,9 @@ async function bodyTest (t, input, expected) {
   t.deepEqual(await body(res), expected)
 }
 
-test('util/validate - valid email', macroValidate, { url: '/email@provider.io' }, 'email@provider.io')
-test('util/validate - missing @', macroValidate, { url: '/emailprovider' }, Error)
-test('util/validate - wrong extension', macroValidate, { url: '/email@provider.c' }, Error)
+test('util/validate - valid email', macroValidate, 'email@provider.io', 'email@provider.io')
+test('util/validate - missing @', macroValidate, 'emailprovider', Error)
+test('util/validate - wrong extension', macroValidate, 'email@provider.c', Error)
 
 function macroValidate (t, input, expected) {
   if (typeof expected !== 'string') {

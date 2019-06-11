@@ -10,29 +10,29 @@ process.env.STORAGE = '/tmp'
 const server = require('./server')
 
 test('server - 500 Error', async t => {
-  const res = await request({ method: 'POST', path: '/email@provider.com' }, 0)
+  const res = await request({ method: 'POST', body: 'email@provider.com' }, 0)
   t.is(res.statusCode, 500)
 })
 
 test('server - Method Not Allowed', async t => {
-  const res = await request({ method: 'PUT', path: '/email@provider' })
+  const res = await request({ method: 'PUT', body: 'email@provider' })
   t.is(res.statusCode, 405)
 })
 
 test('server - POST 409 Error', async t => {
-  const res = await request({ method: 'POST', path: '/email@provider' })
+  const res = await request({ method: 'POST', body: 'email@provider' })
   t.is(res.statusCode, 409)
 })
 
 test('server - POST 200 OK', async t => {
-  const res = await request({ method: 'POST', path: '/email@provider.com' })
+  const res = await request({ method: 'POST', body: 'email@provider.com' })
   t.is(res.statusCode, 200)
 })
 
 test('server - DELETE 200 OK', async t => {
   const res = await request({
     method: 'DELETE',
-    path: '/email@provider.com',
+    path: '/ky8857XlEj1NXFHh',
     headers: {
       authorization: 'Basic 123'
     }
@@ -70,6 +70,7 @@ async function request (options, wait = 15) {
       ...options
     }, resolve)
     req.on('error', reject)
+    if (options.body) req.write(options.body)
     req.end()
   })
 }
