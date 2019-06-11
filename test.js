@@ -4,6 +4,7 @@ const test = require('ava')
 const delay = require('delay')
 
 const { request: cbRequest } = require('http')
+const { body } = require('./util')
 
 process.env.KEY = '123'
 process.env.STORAGE = '/tmp'
@@ -60,6 +61,106 @@ test('server - GET 200 Ok', async t => {
     }
   })
   t.is(res.statusCode, 200)
+})
+
+test('server - GET /', async t => {
+  // add at least fixture
+  await request({
+    method: 'POST',
+    body: 'user@provider.com'
+  })
+  // export
+  const res = await request({
+    method: 'GET',
+    path: '/',
+    headers: {
+      authorization: 'Basic 123'
+    }
+  })
+  const data = await body(res)
+  t.is(typeof data, 'string')
+  t.regex(data, /\n/)
+})
+
+test('server - GET /?verbose', async t => {
+  // add at least fixture
+  await request({
+    method: 'POST',
+    body: 'user@provider.com'
+  })
+  // export
+  const res = await request({
+    method: 'GET',
+    path: '/?verbose',
+    headers: {
+      authorization: 'Basic 123'
+    }
+  })
+  const data = JSON.parse(await body(res))
+  t.is(typeof data, 'object')
+  t.is(typeof data[0]._id, 'string')
+  t.is(typeof data[0].email, 'string')
+  t.regex(data[0]._id, /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/) // is base64
+})
+
+test('server - POST / {random}@domain.com', async t => {
+  const input = `${Math.random()}@domain.com`
+  // add
+  await request({
+    method: 'POST',
+    body: input
+  })
+  // export
+  const res = await request({
+    method: 'GET',
+    path: '/',
+    headers: {
+      authorization: 'Basic 123'
+    }
+  })
+  const data = await body(res)
+
+  // check if exists and no duplicate entry
+  const matches = data.matchAll(new RegExp(input))
+  t.true(Array.from(matches).length > 0)
+  t.is(Array.from(matches).length, 0)
+})
+
+test('server - DELETE / {random}@domain.com', async t => {
+  const input = `${Math.random()}@domain.com`
+  let res, data, item
+  // add
+  await request({
+    method: 'POST',
+    body: input
+  })
+  // get ID
+  res = await request({
+    method: 'GET',
+    path: '/?verbose',
+    headers: {
+      authorization: 'Basic 123'
+    }
+  })
+  data = JSON.parse(await body(res))
+  item = data.find(i => i.email === input)
+  t.not(item, undefined)
+  // delete
+  await request({
+    method: 'DELETE',
+    path: '/' + item._id
+  })
+  // check if deleted
+  res = await request({
+    method: 'GET',
+    path: '/?verbose',
+    headers: {
+      authorization: 'Basic 123'
+    }
+  })
+  data = JSON.parse(await body(res))
+  item = data.find(i => i.email === input)
+  t.is(item, undefined)
 })
 
 async function request (options, wait = 15) {

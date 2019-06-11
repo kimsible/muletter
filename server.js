@@ -2,7 +2,7 @@
 
 const { createServer } = require('http')
 const crypto = require('crypto')
-const qs = require('querystring')
+const url = require('url')
 const path = require('path')
 const mudb = require('mudb')
 const { body, validate, authorize } = require('./util')
@@ -33,7 +33,8 @@ async function actions (req) {
     return
   } else if (method === 'GET') {
     authorize(req)
-    if (qs.parse(req.url.substr(2)).verbose !== undefined) {
+    const { query: { verbose } } = url.parse(req.url, true)
+    if (verbose !== undefined) {
       return JSON.stringify(db.data)
     }
     return db.data.map(row => row.email).join('\n')
