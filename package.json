@@ -34,6 +34,6 @@
     "test": "ava -v",
     "key": "node scripts.js key",
     "export": "node --require dotenv/config scripts.js export",
-    "postinstall": "cp pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
+    "postinstall": "cp pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit && cp pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
   }
 }
