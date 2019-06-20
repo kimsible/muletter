@@ -54,8 +54,9 @@ Example :
 ```http
 POST /
 user@provider.com
-
-> user@provider.com
+```
+```text
+user@provider.com
 ```
 
 **Remove email**
@@ -79,11 +80,12 @@ Example :
 ```http
 GET /
 Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
-
-> user1@provider.com
-  user2@provider.com
-  user3@provider.com
-  ...
+```
+```
+user1@provider.com
+user2@provider.com
+user3@provider.com
+...
 ```
 
 **Export emails with IDs**
@@ -92,15 +94,18 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 |:------|:------|
 |`GET /?verbose`|`Authorization: Basic :key`|
 
+Example :
 ```http
 GET /?verbose
 Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
-
-> {
-    { email: user1@provider.com, _id: 857XlEj1N8FHhXky },
-    { email: user1@provider.com, _id: 7XlEky885j1NXFHh },
-    { email: user3@provider.com, _id: NHhky8XF857XlEj1 },
+```
+```json
+{
+  { "email": "user1@provider.com", "_id": "857XlEj1N8FHhXky" },
+  { "email": "user1@provider.com", "_id": "7XlEky885j1NXFHh" },
+  { "email": "user3@provider.com", "_id": "NHhky8XF857XlEj1" },
   ...
+}
 ```
 
 **Errors**
