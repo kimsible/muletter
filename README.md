@@ -11,35 +11,12 @@ You need a http web server or a cloud hosting to deploy muletter.
 
 ## Getting Start
 
-Generate an **API access key** locally :
-```bash
-npm run key
-
-> KEY : rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
-```
-
 Set **environment variables** on remote server :
 ```
 KEY authorization-key
 PORT optional server port
 HOST optional server host
 STORAGE optional server storage path
-```
-
-And locally into `.env` :
-```
-KEY=authorization-key
-URL=server-url
-```
-
-Export emails :
-```bash
-npm run export
-
-> user1@provider.com
-  user2@provider.com
-  user3@provider.com
-  ...
 ```
 
 ## API Reference
@@ -101,9 +78,18 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 ```
 ```json
 {
-  { "email": "user1@provider.com", "_id": "857XlEj1N8FHhXky" },
-  { "email": "user1@provider.com", "_id": "7XlEky885j1NXFHh" },
-  { "email": "user3@provider.com", "_id": "NHhky8XF857XlEj1" },
+  {
+    "email": "user1@provider.com",
+    "_id": "857XlEj1N8FHhXky"
+  },
+  {
+    "email": "user1@provider.com",
+    "_id": "7XlEky885j1NXFHh"
+  },
+  {
+    "email": "user3@provider.com",
+    "_id": "NHhky8XF857XlEj1"
+  },
   ...
 }
 ```
