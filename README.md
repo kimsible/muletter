@@ -12,13 +12,12 @@ You need a http web server or a cloud hosting to deploy muletter.
 ## Getting Start
 
 Set **environment variables** on remote server :
-```
+```yaml
 KEY authorization-key
 PORT optional server port
 HOST optional server host
 STORAGE optional server storage path
 ```
-
 ## API Reference
 
 **Add email**

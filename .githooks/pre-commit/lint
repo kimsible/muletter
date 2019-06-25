@@ -13,9 +13,3 @@ if [[ $? -ne 0 ]]; then
   echo 'JavaScript Standard Style errors were detected. Aborting commit.'
   exit 1
 fi
-
-./node_modules/.bin/ava -v -m 'util*'
-if [[ $? -ne 0 ]]; then
-  echo 'AVA integration tests errors were detected. Aborting push.'
-  exit 1
-fi
