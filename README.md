@@ -12,12 +12,13 @@ You need a http web server or a cloud hosting to deploy muletter.
 ## Getting Start
 
 Set **environment variables** on remote server :
-```yaml
+```
 KEY authorization-key
 PORT optional server port
 HOST optional server host
 STORAGE optional server storage path
 ```
+
 ## API Reference
 
 **Add email**
@@ -61,7 +62,6 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 user1@provider.com
 user2@provider.com
 user3@provider.com
-...
 ```
 
 **Export emails with IDs**
@@ -76,7 +76,7 @@ GET /?verbose
 Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 ```
 ```json
-{
+[
   {
     "email": "user1@provider.com",
     "_id": "857XlEj1N8FHhXky"
@@ -88,9 +88,8 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
   {
     "email": "user3@provider.com",
     "_id": "NHhky8XF857XlEj1"
-  },
-  ...
-}
+  }
+]
 ```
 
 **Errors**
