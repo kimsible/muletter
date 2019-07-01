@@ -9,9 +9,8 @@ You need a http web server or a cloud hosting to deploy muletter.
 **Persistent storage** is obviously required to keep JSON file data integrity.
 
 
-## Getting Start
+**Environment variables** :
 
-Set **environment variables** on remote server :
 ```yaml
 KEY authorization-key
 PORT optional server port
