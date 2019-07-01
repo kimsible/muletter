@@ -20,7 +20,8 @@
     "node": ">=12.4.0"
   },
   "dependencies": {
-    "mudb": "kimsible/mudb"
+    "mudb": "kimsible/mudb",
+    "nodemailer": "^6.2.1"
   },
   "devDependencies": {
     "ava": "^2.0.0",

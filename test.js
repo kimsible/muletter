@@ -16,7 +16,7 @@ test('server - 500 Error', async t => {
 })
 
 test('server - Method Not Allowed', async t => {
-  const res = await request({ method: 'PUT', body: 'email@provider' })
+  const res = await request({ method: 'OPTIONS' })
   t.is(res.statusCode, 405)
 })
 
@@ -50,6 +50,43 @@ test('server - GET 401 Error', async t => {
     }
   })
   t.is(res.statusCode, 401)
+})
+
+test('server - PUT 401 Error', async t => {
+  const res = await request({
+    method: 'PUT',
+    path: '/',
+    headers: {
+      authorization: 'Basic abc'
+    }
+  })
+  t.is(res.statusCode, 401)
+})
+
+test('server - PUT 500 Error', async t => {
+  const res = await request({
+    method: 'PUT',
+    path: '/',
+    headers: {
+      authorization: 'Basic 123'
+    },
+    body: JSON.stringify('e')
+  })
+  t.is(res.statusCode, 500)
+})
+
+test('server - PUT 200 Ok', async t => {
+  const res = await request({
+    method: 'PUT',
+    path: '/',
+    headers: {
+      authorization: 'Basic 123'
+    },
+    body: JSON.stringify({
+      smtp: 'smtps://user:pass@smtp-mail.example.com'
+    })
+  })
+  t.is(res.statusCode, 200)
 })
 
 test('server - GET 200 Ok', async t => {

@@ -5,9 +5,11 @@ const crypto = require('crypto')
 const url = require('url')
 const path = require('path')
 const mudb = require('mudb')
+const nodemailer = require('nodemailer')
 const { body, validate, authorize } = require('./util')
 
 const { PORT, HOST, STORAGE, NODE_ENV } = process.env
+
 const subscribersJSON = path.resolve(STORAGE || process.cwd(), './subscribers.json')
 
 let db
@@ -38,6 +40,25 @@ async function actions (req) {
       return JSON.stringify(db.data)
     }
     return db.data.map(row => row.email).join('\n')
+  } else if (method === 'PUT') {
+    authorize(req)
+    const { smtp, message, unsubscribe } = JSON.parse(await body(req))
+    const transport = nodemailer.createTransport(smtp)
+    try {
+      await transport.verify()
+    } catch (err) {
+      return err.message
+    }
+    const errors = []
+    const list = db.data.map(item => transport.sendMail({
+      ...message,
+      to: item.email,
+      list: {
+        unsubscribe: `${unsubscribe || message.from}?subject=unsubscribe-${item._id}`
+      }
+    }).catch(err => { errors.push(err.message) }))
+    await Promise.all(list)
+    return errors.join('\n')
   }
   throw new Error('Method Not Allowed')
 }
