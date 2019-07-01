@@ -74,6 +74,7 @@ Example :
 GET /?verbose
 Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 ```
+
 ```json
 [
   {
@@ -91,11 +92,41 @@ Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
 ]
 ```
 
+**Send letter to email list via SMTP**
+
+|Request|Headers|Body|
+|:------|:------|:---|
+|`PUT /`|`Authorization: Basic :key`| `{ smtp, message, unsubscribe }` |
+
+_message_: nodemailer email message fields [https://nodemailer.com/message](https://nodemailer.com/message)
+
+_smtp_: nodemailer smtp connection [https://nodemailer.com/smtp](https://nodemailer.com/smtp)
+
+_unsubscribe_ (optionnal): unsubscribe list header mailto
+
+
+Example :
+```json
+PUT /
+Authorization: Basic rltZ/0p/1sdQp+P2wBd9u9iZh97bn9dg
+
+{
+  "smtp": "smtps://username:password@smtp.example.com",
+  "message": {
+    "from": "sender@server.com",
+    "subject": "Message title",
+    "text": "Plaintext version of the message",
+    "html": "<p>HTML version of the message</p>"
+  },
+  "unsubscribe": "unsubscribe@server.com"
+}
+```
+
 **Errors**
 
 |Code|Type|Description
 |:---|:------|:-------
 |401|`Unauthorized Error`|wrong API access key or bad authorization header
-|405|`Method Not Allowed`|using not allowed method HEAD, PUT, PATCH ...
+|405|`Method Not Allowed`|using not allowed method HEAD, OPTIONS, PATCH ...
 |409|`Conflict Error`|invalid email
 |500|`Internal Server Error`|unexpected server error
