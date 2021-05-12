@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "mudb": "kimsible/mudb",
-    "nodemailer": "^6.2.1"
+    "nodemailer": "^6.4.16"
   },
   "devDependencies": {
     "ava": "^2.1.0",
